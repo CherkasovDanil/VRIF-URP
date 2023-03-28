@@ -612,6 +612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3557754986785060940}
   - component: {fileID: 130945613020649363}
+  - component: {fileID: 1754942200219807010}
   m_Layer: 0
   m_Name: PlayerView
   m_TagString: Untagged
@@ -648,6 +649,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenFade: {fileID: 293833782532826650}
   cameraRig: {fileID: 2523680821581242794}
+  characterController: {fileID: 1754942200219807010}
+--- !u!143 &1754942200219807010
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686343173272170750}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4601752833931695507
 PrefabInstance:
   m_ObjectHideFlags: 0

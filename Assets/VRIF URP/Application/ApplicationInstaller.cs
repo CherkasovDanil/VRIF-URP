@@ -1,5 +1,6 @@
 using UnityEngine;
 using VRIF_URP;
+using VRIF_URP.Player;
 using Zenject;
 
 public class ApplicationInstaller : MonoInstaller
@@ -12,6 +13,8 @@ public class ApplicationInstaller : MonoInstaller
 
         EnvironmentInstaller.Install(Container);
         
+        PlayerInstaller.Install(Container);
+
         Container
             .Bind<ApplicationLauncher>()
             .AsSingle()
