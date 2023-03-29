@@ -12,12 +12,12 @@ public class ApplicationInstaller : MonoInstaller
         OVRPlugin.systemDisplayFrequency = maxFrameRate;
 
         EnvironmentInstaller.Install(Container);
-        
-        PlayerInstaller.Install(Container);
 
         Container
             .Bind<ApplicationLauncher>()
             .AsSingle()
             .NonLazy();
+        
+        PlayerInstaller.Install(Container);
     }
 }
