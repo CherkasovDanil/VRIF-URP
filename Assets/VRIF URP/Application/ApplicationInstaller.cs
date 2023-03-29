@@ -1,6 +1,6 @@
 using UnityEngine;
 using VRIF_URP;
-using VRIF_URP.Player;
+using VRIF_URP.Pipes;
 using Zenject;
 
 public class ApplicationInstaller : MonoInstaller
@@ -12,6 +12,8 @@ public class ApplicationInstaller : MonoInstaller
         OVRPlugin.systemDisplayFrequency = maxFrameRate;
 
         EnvironmentInstaller.Install(Container);
+
+        PipeInstaller.Install(Container);
 
         Container
             .Bind<ApplicationLauncher>()

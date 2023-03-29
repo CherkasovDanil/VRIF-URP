@@ -10,10 +10,16 @@ namespace VRIF_URP
             Container
                 .Bind<PlayerInputConfig>()
                 .FromScriptableObjectResource("PlayerInputConfig")
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
         
             Container
                 .Bind<PlayerMovementController>()
+                .AsSingle()
+                .NonLazy();
+            
+            Container
+                .Bind<RayVisualizer>()
                 .AsSingle()
                 .NonLazy();
         }
