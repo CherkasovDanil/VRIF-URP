@@ -1,4 +1,5 @@
-﻿using VRIF_URP.Player;
+﻿using VRIF_URP.Pipes;
+using VRIF_URP.Player;
 using Zenject;
 
 namespace VRIF_URP
@@ -14,10 +15,15 @@ namespace VRIF_URP
                 .NonLazy();
         
             Container
-                .Bind<PlayerMovementController>()
+                .Bind<PlayerInputController>()
                 .AsSingle()
                 .NonLazy();
             
+            Container
+                .Bind<PlayerMovementController>()
+                .AsSingle()
+                .NonLazy();
+
             Container
                 .Bind<RayVisualizer>()
                 .AsSingle()

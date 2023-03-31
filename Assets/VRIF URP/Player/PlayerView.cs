@@ -16,7 +16,6 @@ namespace VRIF_URP.Player
         [SerializeField] private CharacterController characterController;
         [SerializeField] private GameObject leftHand;
         [SerializeField] private GameObject rightHand;
-
         [SerializeField] private LineRenderer lineRenderer;
     }
 }

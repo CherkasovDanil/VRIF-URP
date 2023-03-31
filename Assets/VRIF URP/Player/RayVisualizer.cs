@@ -14,6 +14,7 @@ namespace VRIF_URP.Player
             SceneHolder sceneHolder)
         {
             _playerView = sceneHolder.Get<PlayerView>();
+            
             _lineRenderer = _playerView.LineRenderer;
             
             tickableManager.Add(this);

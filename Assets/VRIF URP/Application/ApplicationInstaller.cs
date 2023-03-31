@@ -10,16 +10,16 @@ public class ApplicationInstaller : MonoInstaller
     public override void InstallBindings()
     {
         OVRPlugin.systemDisplayFrequency = maxFrameRate;
-
-        EnvironmentInstaller.Install(Container);
-
-        PipeInstaller.Install(Container);
-
+        
         Container
-            .Bind<ApplicationLauncher>()
+            .Bind<SpawnAndInjectPlayer>()
             .AsSingle()
             .NonLazy();
         
         PlayerInstaller.Install(Container);
+
+        EnvironmentInstaller.Install(Container);
+
+        PipeInstaller.Install(Container);
     }
 }

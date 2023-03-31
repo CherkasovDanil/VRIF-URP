@@ -13,12 +13,9 @@ namespace VRIF_URP.Pipes
             _pipeFactory = pipeFactory;
         }
         
-        public void SpawnPipe(GameObject gameObject)
+        public PipeView SpawnPipe()
         {
-            var view = gameObject.GetComponent<InteractableView>(); 
-            var pipe = _pipeFactory.Create();
-            
-            pipe.transform.position = view.transform.position;
+           return _pipeFactory.Create();
         }
     }
 }
