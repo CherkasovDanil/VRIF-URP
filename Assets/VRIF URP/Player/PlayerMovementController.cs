@@ -57,7 +57,7 @@ namespace VRIF_URP.Player
             {
                 if (hit.collider.CompareTag(InteractableTag))
                 {
-                    _pipeSpawner.SpawnPipe(hit.transform);
+                    _pipeSpawner.SpawnPipe(hit.transform.gameObject);
                 }
             }
         }

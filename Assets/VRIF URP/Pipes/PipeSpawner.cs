@@ -4,20 +4,21 @@ namespace VRIF_URP.Pipes
 {
     public class PipeSpawner
     {
-        private readonly Pipe.Factory _pipeFactory;
+        private readonly PipeView.Factory _pipeFactory;
 
         private Transform _lastPos;
 
-        public PipeSpawner(Pipe.Factory pipeFactory)
+        public PipeSpawner(PipeView.Factory pipeFactory)
         {
             _pipeFactory = pipeFactory;
         }
         
-        public void SpawnPipe(Transform transform)
+        public void SpawnPipe(GameObject gameObject)
         {
+            var view = gameObject.GetComponent<InteractableView>(); 
             var pipe = _pipeFactory.Create();
             
-            pipe.transform.position = transform.position;
+            pipe.transform.position = view.transform.position;
         }
     }
 }
