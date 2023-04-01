@@ -9,6 +9,11 @@ namespace VRIF_URP
         public override void InstallBindings()
         {
             Container
+                .Bind<VectorDirectionController>()
+                .AsSingle()
+                .NonLazy();
+            
+            Container
                 .Bind<PlayerInputConfig>()
                 .FromScriptableObjectResource("PlayerInputConfig")
                 .AsSingle()
