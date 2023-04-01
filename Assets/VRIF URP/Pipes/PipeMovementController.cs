@@ -23,6 +23,7 @@ namespace VRIF_URP.Pipes
 
         private float _currentDistanceFromPlayer = 2f;
         private bool _isRotatable = true;
+        private float _angle;
         
         public PipeMovementController(
             TickableManager tickableManager,
@@ -91,28 +92,34 @@ namespace VRIF_URP.Pipes
             {
                 if (grabButtonIsPressed)
                 {
-                    var angle = 0f;
                     if (axis.y > 0.8f)
                     {
                         switch (_currentDirection)
                         {
                             case Direction.Up:
                                 _currentDirection = Direction.Left;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Left);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Left);
                                 break;
                             case Direction.Left:
                                 _currentDirection = Direction.Down;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Down);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Down);
                                 break;
                             case Direction.Down:
                                 _currentDirection = Direction.Right;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Right);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Right);
                                 break;
                             case Direction.Right:
                                 _currentDirection = Direction.Up;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Up);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Up);
                                 break;
                         }
+                        
+                        _currentPipeObject
+                            .transform
+                            .DORotate(new Vector3(_angle,0,0) , RotationAnimationDuration)
+                            .SetEase(Ease.Linear); 
+                        
+                        ModiferTimer();
                     } 
                     else if (axis.y < -0.8f)
                     {
@@ -120,45 +127,45 @@ namespace VRIF_URP.Pipes
                         {
                             case Direction.Up:
                                 _currentDirection = Direction.Right;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Right);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Right);
                                 break;
                             case Direction.Right:
                                 _currentDirection = Direction.Down;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Down);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Down);
                                 break;
                             case Direction.Down:
                                 _currentDirection = Direction.Left;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Left);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Left);
                                 break;
                             case Direction.Left:
                                 _currentDirection = Direction.Up;
-                                angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Up);
+                                _angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Up);
                                 break;
                         }
-                    }
-                    _currentPipeObject
-                        .transform
-                        .DORotate(new Vector3(angle,0,0) , RotationAnimationDuration)
-                        .SetEase(Ease.Linear); 
                         
-                    ModiferTimer();
+                        _currentPipeObject
+                            .transform
+                            .DORotate(new Vector3(_angle,0,0) , RotationAnimationDuration)
+                            .SetEase(Ease.Linear); 
+                        
+                        ModiferTimer();
+                    }
                 }
                 else
                 {
                     var rt = Vector3.zero;
-                    
                     if (axis.x > 0.8f)
                     {
                         rt = _currentPipeObject.transform.rotation.eulerAngles + new Vector3(0,90f,0);
-                        
+                        _currentPipeObject.transform.DORotate( rt, 0.2f);
+                        ModiferTimer();
                     } 
                     else if (axis.x < -0.8f)
                     {
                         rt = _currentPipeObject.transform.rotation.eulerAngles + new Vector3(0,-90f,0);
+                        _currentPipeObject.transform.DORotate( rt, 0.2f);
+                        ModiferTimer();
                     }
-                    
-                    _currentPipeObject.transform.DORotate( rt, 0.2f);
-                    ModiferTimer();
                 }
             }
         }
