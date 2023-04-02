@@ -12,6 +12,7 @@ namespace VRIF_URP.Pipes
         private readonly PipeSpawner _pipeSpawner;
         private readonly VectorDirectionController _vectorDirectionController;
         private readonly PlayerInputController _playerInputController;
+        private readonly PipeConfig _pipeConfig;
 
         private const float RotationAnimationDuration = 0.2f;
 
@@ -35,7 +36,7 @@ namespace VRIF_URP.Pipes
             _pipeSpawner = pipeSpawner;
             _vectorDirectionController = vectorDirectionController;
             _playerInputController = playerInputController;
-            _playerView = sceneHolder.Get<PlayerView>();
+          _playerView = sceneHolder.Get<PlayerView>();
 
             tickableManager.Add(this);
         }
@@ -44,6 +45,12 @@ namespace VRIF_URP.Pipes
         {
             if (_currentPipeObject == null)
             {
+                _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
+            }
+
+            if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+            {
+                _currentPipeObject = null;
                 _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
             }
 

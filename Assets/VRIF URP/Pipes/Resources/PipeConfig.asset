@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6144dfd14ce421ea524d499ce711b75, type: 3}
+  m_Name: PipeConfig
+  m_EditorClassIdentifier: 
+  pipeModels:
+  - ID: 0
+    Name: "\u041F\u0440\u044F\u043C\u0430\u044F \u0442\u0440\u0443\u0431\u0430"
+    Prafab: {fileID: 4825280729066727301, guid: adaf5bf9a59c4224fbac037aaf5b6e74,
+      type: 3}
+  - ID: 1
+    Name: "\u0422 \u043E\u0431\u0440\u0430\u0437\u043D\u0430\u044F \u0442\u0440\u0443\u0431\u0430"
+    Prafab: {fileID: 5453620111844531521, guid: 63040dfcded8f014ea91e7ef67edc44f,
+      type: 3}

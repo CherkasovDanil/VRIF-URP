@@ -11,9 +11,15 @@ namespace VRIF_URP.Pipes
                 .AsSingle();
 
             Container
-                .BindFactory<PipeView, PipeView.Factory>()
-                .FromComponentInNewPrefabResource("PipeView")
+                .BindFactory<int, PipeView, PipeView.Factory>()
+                .FromComponentInNewPrefabResource("Pipe")
                 .UnderTransformGroup("PipeObj");
+
+            Container
+                .Bind<PipeConfig>()
+                .FromScriptableObjectResource("PipeConfig")
+                .AsSingle()
+                .NonLazy();
             
             Container
                 .Bind<PipeMovementController>()
