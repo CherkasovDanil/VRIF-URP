@@ -1,0 +1,7 @@
+﻿namespace VRIF_URP.Pipes
+{
+    public class PipeControllerProtocol
+    {
+        
+    }
+}

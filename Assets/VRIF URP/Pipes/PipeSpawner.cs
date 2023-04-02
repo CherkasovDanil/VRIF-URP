@@ -6,6 +6,7 @@ namespace VRIF_URP.Pipes
     {
         private readonly PipeView.Factory _pipeFactory;
         private readonly PipeConfig _pipeConfig;
+        private readonly PipeService _pipeService;
 
         private Transform _lastPos;
 
@@ -14,22 +15,19 @@ namespace VRIF_URP.Pipes
 
         public PipeSpawner(
             PipeView.Factory pipeFactory,
-            PipeConfig pipeConfig)
+            PipeConfig pipeConfig,
+            PipeService pipeService)
         {
             _pipeFactory = pipeFactory;
             _pipeConfig = pipeConfig;
+            _pipeService = pipeService;
 
             _maxCount = pipeConfig.GetPrefabsCount();
         }
         
-        public PipeView SpawnPipe()
+        public GameObject SpawnPipe()
         {
-            _iterator++;
-            if (_iterator>_maxCount)
-            {
-                _iterator = 0;
-            }
-            return _pipeFactory.Create(_iterator);
+            return _pipeService.Spawn();
         }
     }
 }

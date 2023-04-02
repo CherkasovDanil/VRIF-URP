@@ -36,7 +36,7 @@ namespace VRIF_URP.Pipes
             _pipeSpawner = pipeSpawner;
             _vectorDirectionController = vectorDirectionController;
             _playerInputController = playerInputController;
-          _playerView = sceneHolder.Get<PlayerView>();
+            _playerView = sceneHolder.Get<PlayerView>();
 
             tickableManager.Add(this);
         }
@@ -45,7 +45,7 @@ namespace VRIF_URP.Pipes
         {
             if (_currentPipeObject == null)
             {
-                _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
+                _currentPipeObject = _pipeSpawner.SpawnPipe();
             }
 
             if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))

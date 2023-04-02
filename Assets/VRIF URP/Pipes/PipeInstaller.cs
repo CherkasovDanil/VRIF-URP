@@ -7,11 +7,15 @@ namespace VRIF_URP.Pipes
         public override void InstallBindings()
         {
             Container
+                .Bind<PipeService>()
+                .AsSingle();
+            
+            Container
                 .Bind<PipeSpawner>()
                 .AsSingle();
 
             Container
-                .BindFactory<int, PipeView, PipeView.Factory>()
+                .BindFactory<PipeView, PipeView.Factory>()
                 .FromComponentInNewPrefabResource("Pipe")
                 .UnderTransformGroup("PipeObj");
 
