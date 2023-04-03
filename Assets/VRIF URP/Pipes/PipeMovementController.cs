@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using VRIF_URP.Player;
+using VRIF_URP.Room;
 using VRIF_URP.SceneObject;
 using Zenject;
 
@@ -21,6 +22,7 @@ namespace VRIF_URP.Pipes
         
         private Direction _currentDirection = Direction.Up;
         private Direction _targetDirection;
+        private RoomView _roomView;
 
         private float _currentDistanceFromPlayer = 2f;
         private bool _isRotatable = true;
@@ -37,21 +39,69 @@ namespace VRIF_URP.Pipes
             _vectorDirectionController = vectorDirectionController;
             _playerInputController = playerInputController;
             _playerView = sceneHolder.Get<PlayerView>();
+            _roomView = sceneHolder.Get<RoomView>();
 
             tickableManager.Add(this);
+            
+            _currentPipeObject = _pipeSpawner.SpawnPipe();
         }
         
         public void Tick()
         {
-            if (_currentPipeObject == null)
-            {
-                _currentPipeObject = _pipeSpawner.SpawnPipe();
-            }
-
             if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             {
-                _currentPipeObject = null;
-                _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
+                var list = _roomView.GetEmptyPlace();
+
+                var theLowestDistance = 100f;
+                var index = 0;
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var distance = Vector3.Distance(_currentPipeObject.transform.position, list[i].transform.position);
+
+                    if (distance > 1f)
+                    {
+                        break;
+                    }
+                    if ( distance < theLowestDistance)
+                    {
+                        theLowestDistance = distance;
+                        index = i;
+                    }
+                }
+
+                if (theLowestDistance != 100f)
+                {
+                    _currentPipeObject.transform.position = list[index].transform.position;
+                    _angle =  _vectorDirectionController.GetAngle(_currentDirection, list[index].GetPipePlaceDirection);
+               
+                    _currentPipeObject
+                        .transform
+                        .DORotate(new Vector3(_angle,0,0) , 0)
+                        .SetEase(Ease.Linear); 
+                
+                   
+                    Debug.Log(_roomView.GetEmptyPlace().Count );
+                    if (_roomView.GetEmptyPlace().Count > 0)
+                    {
+                        _currentPipeObject = null;
+                        _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
+                    }
+                    
+                    return;
+                }
+
+                var color = _currentPipeObject.GetComponent<MeshRenderer>().material.color;
+                _currentPipeObject.GetComponent<MeshRenderer>().material.DOColor(Color.red, .5f).OnComplete(() =>
+                {
+                    _currentPipeObject.GetComponent<MeshRenderer>().material.DOColor(color, .5f);
+                });
+
+            }
+
+            if (_currentPipeObject == null)
+            {
+                return;
             }
 
             var currentAxisRightThumbStick = _playerInputController.GetRightThumbstickControllerInput();

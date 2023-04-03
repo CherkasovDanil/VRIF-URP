@@ -13,6 +13,7 @@ namespace VRIF_URP.Pipes
         private int id;
         
         private Dictionary<int, GameObject> _pipeStorage = new Dictionary<int, GameObject>();
+        private Dictionary<int, Transform> _connectionPlaceDictionary = new Dictionary<int, Transform>();
 
         public PipeService(
             PipeConfig pipeConfig,

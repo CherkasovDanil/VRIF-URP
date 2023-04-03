@@ -50,6 +50,7 @@ namespace VRIF_URP.Pipes
                     {
                         Direction.Left => 0 + 90, 
                         Direction.Right => 0 - 90,
+                        Direction.Down => 0 + 180,
                         _ => 0
                     },
                     Direction.Left => targetDirection switch

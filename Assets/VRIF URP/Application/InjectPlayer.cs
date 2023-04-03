@@ -1,6 +1,7 @@
 ﻿
 using VRIF_URP.Command;
 using VRIF_URP.Player;
+using VRIF_URP.Room;
 using VRIF_URP.SceneObject;
 using Zenject;
 
@@ -22,7 +23,9 @@ namespace VRIF_URP
         public override CommandResult Execute()
         {
             var player = _instantiator.InstantiatePrefabResourceForComponent<PlayerView>("PlayerView");
+            var room = _instantiator.InstantiatePrefabResourceForComponent<RoomView>("RoomView");
             _sceneHolder.Add<PlayerView>(player);
+            _sceneHolder.Add<RoomView>(room);
             
             return base.Execute();
         }
