@@ -11,10 +11,6 @@ namespace VRIF_URP.Pipes
                 .AsSingle();
             
             Container
-                .Bind<PipeSpawner>()
-                .AsSingle();
-
-            Container
                 .BindFactory<PipeView, PipeView.Factory>()
                 .FromComponentInNewPrefabResource("Pipe")
                 .UnderTransformGroup("PipeObj");

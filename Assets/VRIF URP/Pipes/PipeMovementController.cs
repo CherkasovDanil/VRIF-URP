@@ -10,7 +10,7 @@ namespace VRIF_URP.Pipes
 {
     public class PipeMovementController : ITickable
     {
-        private readonly PipeSpawner _pipeSpawner;
+        private readonly PipeService _pipeService;
         private readonly VectorDirectionController _vectorDirectionController;
         private readonly PlayerInputController _playerInputController;
         private readonly PipeConfig _pipeConfig;
@@ -22,7 +22,6 @@ namespace VRIF_URP.Pipes
         
         private Direction _currentDirection = Direction.Up;
         private Direction _targetDirection;
-        private RoomView _roomView;
 
         private float _currentDistanceFromPlayer = 2f;
         private bool _isRotatable = true;
@@ -30,78 +29,33 @@ namespace VRIF_URP.Pipes
         
         public PipeMovementController(
             TickableManager tickableManager,
-            PipeSpawner pipeSpawner,
+            PipeService pipeService,
             SceneHolder sceneHolder,
             VectorDirectionController vectorDirectionController,
             PlayerInputController playerInputController)
         {
-            _pipeSpawner = pipeSpawner;
+            _pipeService = pipeService;
             _vectorDirectionController = vectorDirectionController;
             _playerInputController = playerInputController;
             _playerView = sceneHolder.Get<PlayerView>();
-            _roomView = sceneHolder.Get<RoomView>();
 
             tickableManager.Add(this);
             
-            _currentPipeObject = _pipeSpawner.SpawnPipe();
+            _currentPipeObject = _pipeService.Spawn();
         }
         
         public void Tick()
         {
             if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             {
-                var list = _roomView.GetEmptyPlace();
-
-                var theLowestDistance = 100f;
-                var index = 0;
-
-                for (int i = 0; i < list.Count; i++)
-                {
-                    var distance = Vector3.Distance(_currentPipeObject.transform.position, list[i].transform.position);
-
-                    if (distance > 1f)
-                    {
-                        break;
-                    }
-                    if ( distance < theLowestDistance)
-                    {
-                        theLowestDistance = distance;
-                        index = i;
-                    }
-                }
-
-                if (theLowestDistance != 100f)
-                {
-                    _currentPipeObject.transform.position = list[index].transform.position;
-                    _angle =  _vectorDirectionController.GetAngle(_currentDirection, list[index].GetPipePlaceDirection);
-               
-                    _currentPipeObject
-                        .transform
-                        .DORotate(new Vector3(_angle,0,0) , 0)
-                        .SetEase(Ease.Linear); 
+                var obj = _pipeService.TrySpawnPipe(_currentPipeObject, _currentDirection);
                 
-                   
-                    Debug.Log(_roomView.GetEmptyPlace().Count );
-                    if (_roomView.GetEmptyPlace().Count > 0)
-                    {
-                        _currentPipeObject = null;
-                        _currentPipeObject = _pipeSpawner.SpawnPipe().gameObject;
-                    }
-                    
-                    return;
+                if (obj != null)
+                {
+                    _currentPipeObject = obj;
                 }
 
-                var color = _currentPipeObject.GetComponent<MeshRenderer>().material.color;
-                _currentPipeObject.GetComponent<MeshRenderer>().material.DOColor(Color.red, .5f).OnComplete(() =>
-                {
-                    _currentPipeObject.GetComponent<MeshRenderer>().material.DOColor(color, .5f);
-                });
-
-            }
-
-            if (_currentPipeObject == null)
-            {
-                return;
+                ModiferTimer();
             }
 
             var currentAxisRightThumbStick = _playerInputController.GetRightThumbstickControllerInput();
