@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DG.Tweening;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using VRIF_URP.Player;
 using VRIF_URP.Room;
@@ -17,15 +18,17 @@ namespace VRIF_URP.Pipes
 
         private const float RotationAnimationDuration = 0.2f;
 
-        private GameObject _currentPipeObject;
         private PlayerView _playerView;
         
-        private Direction _currentDirection = Direction.Up;
-        private Direction _targetDirection;
+        private GameObject _currentPipeObject;
+        private Direction _currentPipeDirection;
+        private GameObject _tempGO;
 
         private float _currentDistanceFromPlayer = 2f;
         private bool _isRotatable = true;
         private float _angle;
+
+        private bool _stateRayCastInput = true;
         
         public PipeMovementController(
             TickableManager tickableManager,
@@ -39,40 +42,97 @@ namespace VRIF_URP.Pipes
             _playerInputController = playerInputController;
             _playerView = sceneHolder.Get<PlayerView>();
 
-            tickableManager.Add(this);
+            _playerInputController.SetActiveRayCastInput(_stateRayCastInput);
             
-            _currentPipeObject = _pipeService.Spawn();
-        }
+            tickableManager.Add(this); }
         
         public void Tick()
         {
-            if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+            if (_stateRayCastInput)
             {
-                var obj = _pipeService.TrySpawnPipe(_currentPipeObject, _currentDirection);
-                
-                if (obj != null)
+                _tempGO = _playerInputController.GetRayCastInput();
+                if (_tempGO.tag == "Copy" && _playerInputController.GetSecondaryIndexTrigger())
                 {
-                    _currentPipeObject = obj;
+                    var prefab = _pipeService.Spawn(_tempGO.GetComponent<CanvasRoomPipeElement>().ID);
+                    _currentPipeObject = prefab.gameObject;
+                    _currentPipeDirection = prefab.GetPipeDirection();
+                    
+                    _stateRayCastInput = false;
+                
+                    _playerInputController.SetActiveRayCastInput(_stateRayCastInput);
                 }
-
-                ModiferTimer();
             }
+            else
+            {
+                StandartMovment();
+            }
+        }
 
+        private void StandartMovment()
+        {
+            if (_playerInputController.GetPrimaryIndexTrigger())
+            {
+                _stateRayCastInput = true;
+                _playerInputController.SetActiveRayCastInput(_stateRayCastInput);
+                Object.Destroy(_currentPipeObject);
+                return;
+            }
+            
             var currentAxisRightThumbStick = _playerInputController.GetRightThumbstickControllerInput();
             
             var grabButtonIsPressed = _playerInputController.GetGripButtonRightControllerInput();
 
             RotationMovement(currentAxisRightThumbStick, grabButtonIsPressed);
-            
-            _currentPipeObject.transform.position =
-                _playerView.RightHand.transform.position + _playerView.RightHand.transform.forward * _currentDistanceFromPlayer;
-            
+
+            if (!TryVisualizePrefab())
+            {
+                _currentPipeObject.transform.position =
+                    _playerView.RightHand.transform.position + _playerView.RightHand.transform.forward * _currentDistanceFromPlayer;
+            }
+
             if (grabButtonIsPressed)
             {
                 return;
             }
             
             ForwardBackMovement(currentAxisRightThumbStick);
+        }
+
+        private bool TryVisualizePrefab()
+        {
+            var list = _pipeService.GetEmptyPlace();
+            
+            var theLowestDistance = 100f;
+            var index = -1;
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                var distance = Vector3.Distance(_playerView.RightHand.transform.position + 
+                                                _playerView.RightHand.transform.forward * 
+                                                _currentDistanceFromPlayer, 
+                                            list[i].transform.position);
+
+                if (distance > 1f)
+                {
+                    break;
+                }
+                
+                if ( distance < theLowestDistance)
+                {
+                    theLowestDistance = distance;
+                    index = i;
+                }
+            }
+            
+            if (theLowestDistance != 100f)
+            {
+                if (_currentPipeDirection == list[index].GetPipePlaceDirection )
+                {
+                    _currentPipeObject.transform.position = list[index].transform.position;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void ForwardBackMovement(Vector2 axis)
@@ -105,22 +165,22 @@ namespace VRIF_URP.Pipes
                 {
                     if (axis.y > 0.8f)
                     {
-                        switch (_currentDirection)
+                        switch (_currentPipeDirection)
                         {
                             case Direction.Up:
-                                _currentDirection = Direction.Left;
+                                _currentPipeDirection = Direction.Left;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Left);
                                 break;
                             case Direction.Left:
-                                _currentDirection = Direction.Down;
+                                _currentPipeDirection = Direction.Down;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Down);
                                 break;
                             case Direction.Down:
-                                _currentDirection = Direction.Right;
+                                _currentPipeDirection = Direction.Right;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Right);
                                 break;
                             case Direction.Right:
-                                _currentDirection = Direction.Up;
+                                _currentPipeDirection = Direction.Up;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Up);
                                 break;
                         }
@@ -134,22 +194,22 @@ namespace VRIF_URP.Pipes
                     } 
                     else if (axis.y < -0.8f)
                     {
-                        switch (_currentDirection)
+                        switch (_currentPipeDirection)
                         {
                             case Direction.Up:
-                                _currentDirection = Direction.Right;
+                                _currentPipeDirection = Direction.Right;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Up, Direction.Right);
                                 break;
                             case Direction.Right:
-                                _currentDirection = Direction.Down;
+                                _currentPipeDirection = Direction.Down;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Right, Direction.Down);
                                 break;
                             case Direction.Down:
-                                _currentDirection = Direction.Left;
+                                _currentPipeDirection = Direction.Left;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Down, Direction.Left);
                                 break;
                             case Direction.Left:
-                                _currentDirection = Direction.Up;
+                                _currentPipeDirection = Direction.Up;
                                 _angle =  _vectorDirectionController.GetAngle(Direction.Left, Direction.Up);
                                 break;
                         }

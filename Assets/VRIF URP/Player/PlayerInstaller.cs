@@ -28,11 +28,6 @@ namespace VRIF_URP
                 .Bind<PlayerMovementController>()
                 .AsSingle()
                 .NonLazy();
-
-            Container
-                .Bind<RayVisualizer>()
-                .AsSingle()
-                .NonLazy();
         }
     }
 }

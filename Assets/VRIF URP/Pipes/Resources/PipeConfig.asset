@@ -14,22 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipeModels:
   - ID: 0
-    Name: "\u041F\u0440\u044F\u043C\u0430\u044F \u0442\u0440\u0443\u0431\u0430"
+    Name: 
     Prafab: {fileID: 4825280729066727301, guid: adaf5bf9a59c4224fbac037aaf5b6e74,
       type: 3}
   - ID: 1
-    Name: "\u0422 \u043E\u0431\u0440\u0430\u0437\u043D\u0430\u044F \u0442\u0440\u0443\u0431\u0430"
-    Prafab: {fileID: 5288567122381133495, guid: a9e1c806e7ac180499b62908712cbb46,
-      type: 3}
-  - ID: 2
-    Name: "\u0414\u043B\u0438\u043D\u043D\u0430\u044F \u043F\u0440\u0430\u044F\u043C\u0430\u044F
-      \u0442\u0440\u0443\u0431\u0430"
+    Name: 
     Prafab: {fileID: 429348357055809738, guid: 76debe067fcfd8042a2de953ae6336bc, type: 3}
-  - ID: 3
+  - ID: 2
     Name: 
     Prafab: {fileID: 3079522965657150327, guid: bc1715f40f9371742a92324eb7913469,
       type: 3}
-  - ID: 4
+  - ID: 3
     Name: 
     Prafab: {fileID: 5722019449314709179, guid: 0dacd254226a8144ea73900c189aacc5,
+      type: 3}
+  - ID: 4
+    Name: 
+    Prafab: {fileID: 5288567122381133495, guid: a9e1c806e7ac180499b62908712cbb46,
+      type: 3}
+  - ID: 5
+    Name: 
+    Prafab: {fileID: 1979712357573018185, guid: 8ab55dde742b38d4a9ea01743da8bf64,
       type: 3}

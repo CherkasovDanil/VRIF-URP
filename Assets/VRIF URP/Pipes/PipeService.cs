@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -15,7 +16,8 @@ namespace VRIF_URP.Pipes
         private readonly IInstantiator _instantiator;
         private readonly VectorDirectionController _vectorDirectionController;
 
-        private Dictionary<int, GameObject> _pipeStorage = new Dictionary<int, GameObject>();
+        private Dictionary<int, PipeView> _pipeStorage = new Dictionary<int, PipeView>();
+        private List<PipeView> _pipeStorageList = new List<PipeView>();
         private Dictionary<int, Transform> _connectionPlaceDictionary = new Dictionary<int, Transform>();
         
         private RoomView _roomView;
@@ -41,8 +43,12 @@ namespace VRIF_URP.Pipes
             _maxId = _config.GetPrefabsCount();
         }
 
-        [CanBeNull]
-        public GameObject TrySpawnPipe(GameObject currentPipeObject, Direction _currentDirection)
+        public List<PipeConnectionPlace> GetEmptyPlace()
+        {
+            return _roomView.GetEmptyPlace();
+        }
+
+        /*public GameObject TrySpawnPipe(GameObject currentPipeObject, Direction _currentDirection)
         {
             var list = _roomView.GetEmptyPlace();
             
@@ -89,23 +95,24 @@ namespace VRIF_URP.Pipes
             ErrorAnimation(currentPipeObject);
 
             return null;
-        }
+        }*/
+        
 
-        public GameObject Spawn()
+        public PipeView Spawn(int id)
         {
             var model = _config.Get(id);
-            
-            id++;
-            if (id >= _maxId)
-            {
-                id = 0;
-            }
 
-            var prefab = _instantiator.InstantiatePrefab(model.Value.Prafab);
+            var prefab = _instantiator.InstantiatePrefabForComponent<PipeView>(model.Value.Prafab);
 
             _pipeStorage.Add(prefab.gameObject.GetInstanceID(), prefab);
+            _pipeStorageList.Add(prefab);
 
             return prefab;
+        }
+
+        public PipeView GetLastSpawnedPipeView()
+        {
+            return _pipeStorageList.Last();
         }
 
         private void ErrorAnimation(GameObject gameObject)
