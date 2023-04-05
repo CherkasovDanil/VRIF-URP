@@ -1,6 +1,6 @@
 ﻿namespace VRIF_URP.Player
 {
-    public enum Direction
+    public enum PipeDirection
     {
         Left,
         Right,

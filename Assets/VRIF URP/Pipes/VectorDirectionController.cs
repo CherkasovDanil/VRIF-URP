@@ -8,20 +8,20 @@ namespace VRIF_URP.Pipes
     {
         private Vector3 _vector3 = Vector3.zero;
 
-        public Vector3 GetVectorFromDirection(Direction direction)
+        public Vector3 GetVectorFromDirection(PipeDirection pipeDirection)
         {
-            switch (direction)
+            switch (pipeDirection)
             {
-                case Direction.Left:
+                case PipeDirection.Left:
                     _vector3 = Vector3.left;
                     break;
-                case Direction.Right:
+                case PipeDirection.Right:
                     _vector3 = Vector3.right;
                     break;
-                case Direction.Up:
+                case PipeDirection.Up:
                     _vector3 = Vector3.up;
                     break;
-                case Direction.Down:
+                case PipeDirection.Down:
                     _vector3 = Vector3.down;
                     break;
                 default:
@@ -31,9 +31,9 @@ namespace VRIF_URP.Pipes
             return _vector3;
         }
 
-        public float GetAngleFromDirection(Direction direction)
+        public float GetAngleFromDirection(PipeDirection pipeDirection)
         {
-            _vector3 = GetVectorFromDirection(direction);
+            _vector3 = GetVectorFromDirection(pipeDirection);
             
             float n = Mathf.Atan2(_vector3.y, _vector3.x) * Mathf.Rad2Deg;
             if (n < 0)
@@ -41,34 +41,34 @@ namespace VRIF_URP.Pipes
             return n;
         }
 
-        public float GetAngle(Direction direction, Direction targetDirection)
+        public float GetAngle(PipeDirection pipeDirection, PipeDirection targetPipeDirection)
         {
-            float angle = direction 
+            float angle = pipeDirection 
                 switch
                 {
-                    Direction.Up => targetDirection switch
+                    PipeDirection.Up => targetPipeDirection switch
                     {
-                        Direction.Left => 0 + 90, 
-                        Direction.Right => 0 - 90,
-                        Direction.Down => 0 + 180,
+                        PipeDirection.Left => 0 + 90, 
+                        PipeDirection.Right => 0 - 90,
+                        PipeDirection.Down => 0 + 180,
                         _ => 0
                     },
-                    Direction.Left => targetDirection switch
+                    PipeDirection.Left => targetPipeDirection switch
                     {
-                        Direction.Down => 180,
-                        Direction.Up => 0,
+                        PipeDirection.Down => 180,
+                        PipeDirection.Up => 0,
                         _ => 180
                     },
-                    Direction.Down => targetDirection switch
+                    PipeDirection.Down => targetPipeDirection switch
                     {
-                        Direction.Left => 90, 
-                        Direction.Right => 270, 
+                        PipeDirection.Left => 90, 
+                        PipeDirection.Right => 270, 
                         _ => 270
                     },
-                    Direction.Right => targetDirection switch
+                    PipeDirection.Right => targetPipeDirection switch
                     {
-                        Direction.Down => 180, 
-                        Direction.Up => 0, 
+                        PipeDirection.Down => 180, 
+                        PipeDirection.Up => 0, 
                         _ => 0
                     },
                 };

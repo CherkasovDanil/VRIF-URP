@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using UnityEngine;
-using VRIF_URP.Pipes;
+﻿using UnityEngine;
 using VRIF_URP.SceneObject;
 using Zenject;
 
@@ -22,7 +20,7 @@ namespace VRIF_URP.Player
 
         public PlayerInputController(
             TickableManager tickableManager,
-           SceneHolder sceneHolder)
+            SceneHolder sceneHolder)
         {
             _playerView = sceneHolder.Get<PlayerView>();
             

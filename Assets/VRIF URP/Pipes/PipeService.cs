@@ -25,7 +25,6 @@ namespace VRIF_URP.Pipes
         private MeshRenderer _meshRenderer;
         
         private bool _animationIsRunning;
-        private int _maxId;
         private int id;
 
         public PipeService(
@@ -39,8 +38,6 @@ namespace VRIF_URP.Pipes
             _vectorDirectionController = vectorDirectionController;
 
             _roomView = sceneHolder.Get<RoomView>();
-
-            _maxId = _config.GetPrefabsCount();
         }
 
         public List<PipeConnectionPlace> GetEmptyPlace()
@@ -48,7 +45,7 @@ namespace VRIF_URP.Pipes
             return _roomView.GetEmptyPlace();
         }
 
-        /*public GameObject TrySpawnPipe(GameObject currentPipeObject, Direction _currentDirection)
+        public GameObject TrySpawnPipe(GameObject currentPipeObject, PipeDirection currentPipeDirection)
         {
             var list = _roomView.GetEmptyPlace();
             
@@ -76,7 +73,7 @@ namespace VRIF_URP.Pipes
             if (theLowestDistance != 100f)
             {
                 currentPipeObject.transform.position = list[index].transform.position;
-                _angle =  _vectorDirectionController.GetAngle(_currentDirection, list[index].GetPipePlaceDirection);
+                _angle =  _vectorDirectionController.GetAngle(currentPipeDirection, list[index].GetPipePlacePipeDirection);
                
                 currentPipeObject
                     .transform
@@ -89,13 +86,13 @@ namespace VRIF_URP.Pipes
                     return null;
                 }
                     
-                return Spawn();
+                return Spawn(GetLastSpawnedPipeView().GetPipeViewID()).gameObject;
             }
 
             ErrorAnimation(currentPipeObject);
 
             return null;
-        }*/
+        }
         
 
         public PipeView Spawn(int id)

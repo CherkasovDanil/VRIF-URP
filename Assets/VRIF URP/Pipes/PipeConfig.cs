@@ -8,7 +8,6 @@ namespace VRIF_URP.Pipes
     public struct PipeModel
     {
         public int ID;
-        public string Name;
         public GameObject Prafab;
     }
 

@@ -1,5 +1,4 @@
-﻿
-using VRIF_URP.Command;
+﻿using VRIF_URP.Command;
 using VRIF_URP.Player;
 using VRIF_URP.Room;
 using VRIF_URP.SceneObject;
@@ -7,12 +6,12 @@ using Zenject;
 
 namespace VRIF_URP
 {
-    public class InjectPlayer: Command.Command
+    public class InjectPlayerCommand: Command.Command
     {
         private readonly IInstantiator _instantiator;
         private readonly SceneHolder _sceneHolder;
 
-        public InjectPlayer(
+        public InjectPlayerCommand(
             IInstantiator instantiator,
             SceneHolder sceneHolder)
         {

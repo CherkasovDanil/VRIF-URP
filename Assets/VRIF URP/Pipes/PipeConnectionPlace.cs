@@ -6,12 +6,12 @@ namespace VRIF_URP.Pipes
 {
     public class PipeConnectionPlace : MonoBehaviour
     {
-        public Direction GetPipePlaceDirection => direction;
+        public PipeDirection GetPipePlacePipeDirection => pipeDirection;
         public bool IsEmpty => _isEmpty;
         
         public Transform GetConnectionPlace => transform;
 
-        [SerializeField] private Direction direction;
+        [SerializeField] private PipeDirection pipeDirection;
         
         private bool _isEmpty = true;
 
@@ -25,6 +25,5 @@ namespace VRIF_URP.Pipes
         {
             _isEmpty = true;
         }
-
     }
 }

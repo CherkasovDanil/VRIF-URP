@@ -6,14 +6,21 @@ namespace VRIF_URP.Pipes
 {
     public class PipeView : MonoBehaviour
     {
-        [SerializeField] private Direction direction;
+        //TODO add change direction
+        [SerializeField] private PipeDirection pipeDirection;
+        [SerializeField] private int id;
         
         public bool IgnoreUpDownDiretion;
         public bool IgnoreLeftRightDiretion;
 
-        public Direction GetPipeDirection()
+        public PipeDirection GetPipeDirection()
         {
-            return direction;
+            return pipeDirection;
+        }
+
+        public int GetPipeViewID()
+        {
+            return id;
         }
         
         public class Factory : PlaceholderFactory<PipeView>
