@@ -68,6 +68,11 @@ namespace VRIF_URP.Player
         {
             return OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger);
         }
+        
+        public bool GetControllerAButton()
+        {
+            return OVRInput.GetDown(OVRInput.RawButton.A);
+        }
 
         public void SetActiveRayCastInput(bool state)
         {

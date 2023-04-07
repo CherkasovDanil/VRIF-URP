@@ -77,6 +77,11 @@ namespace VRIF_URP.Pipes
             return _pipeStorageList.Last();
         }
 
+        public void RemoveLastPrefab()
+        {
+            _pipeStorageList.Remove(_pipeStorageList.Last());
+        }
+
         public void AnimatopLastSpawnedPipeView(Color color)
         {
             var lastPipe = GetLastSpawnedPipeView();

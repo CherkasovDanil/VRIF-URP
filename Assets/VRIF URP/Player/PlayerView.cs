@@ -8,10 +8,8 @@ namespace VRIF_URP.Player
         public GameObject RightHand => rightHand;
         public CharacterController CharacterController => characterController;
         public OVRScreenFade ScreenFade => screenFade;
-        public OVRCameraRig CameraRig => cameraRig;
 
         [SerializeField] private OVRScreenFade screenFade;
-        [SerializeField] private OVRCameraRig cameraRig;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private GameObject leftHand;
         [SerializeField] private GameObject rightHand;

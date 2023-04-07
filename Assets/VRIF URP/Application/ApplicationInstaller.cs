@@ -1,5 +1,6 @@
 using UnityEngine;
 using VRIF_URP;
+using VRIF_URP.Game;
 using VRIF_URP.Pipes;
 using VRIF_URP.SceneObject;
 using Zenject;
@@ -24,5 +25,10 @@ public class ApplicationInstaller : MonoInstaller
         PlayerInstaller.Install(Container);
 
         PipeInstaller.Install(Container);
+
+        Container
+            .Bind<GameController>()
+            .AsSingle()
+            .NonLazy();
     }
 }

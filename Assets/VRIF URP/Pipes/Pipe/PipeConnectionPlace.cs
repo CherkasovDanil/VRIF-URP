@@ -6,11 +6,12 @@ namespace VRIF_URP.Pipes
     public class PipeConnectionPlace : MonoBehaviour
     {
         public bool BlockPlace => _blockPlace;
+        
         public PipeDirection GetPipePlacePipeDirection => pipeDirection;
        
         [SerializeField] private PipeDirection pipeDirection;
         
-       private bool _blockPlace;
+        public bool _blockPlace;
 
         public void SetStateBlockPipePlacesForConnection(bool state)
         {

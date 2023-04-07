@@ -19,11 +19,6 @@ namespace VRIF_URP.Pipes
         private Dictionary<int, PipeModel> _dict;
         
         [NonSerialized] private bool _isInited;
-
-        public int GetPrefabsCount()
-        {
-            return pipeModels.Length;
-        }
         
         public PipeModel? Get(int id)
         {

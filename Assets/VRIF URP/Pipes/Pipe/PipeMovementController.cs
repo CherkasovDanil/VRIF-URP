@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -75,13 +76,19 @@ namespace VRIF_URP.Pipes
             }
         }
 
+      
         private void StandartMovment()
         {
             if (_playerInputController.GetPrimaryIndexTrigger())
             {
                 _stateRayCastInput = true;
                 _playerInputController.SetActiveRayCastInput(_stateRayCastInput);
-                Object.Destroy(_currentPipeView);
+                _pipeService.RemoveLastPrefab();
+                
+                Object.Destroy(_currentPipeView.gameObject);
+                
+                _list = _pipeService.GetEmptyPlace();
+                
                 return;
             }
             
@@ -90,8 +97,6 @@ namespace VRIF_URP.Pipes
             var grabButtonIsPressed = _playerInputController.GetGripButtonRightControllerInput();
 
             RotationMovement(currentAxisRightThumbStick, grabButtonIsPressed);
-            
-            ForwardBackMovement(currentAxisRightThumbStick);
 
             if (!TryVisualizePrefab())
             {
@@ -103,6 +108,14 @@ namespace VRIF_URP.Pipes
                     _pipeService.AnimatopLastSpawnedPipeView(Color.red);
                 }
             }
+
+            if (grabButtonIsPressed)
+            {
+                return;
+            }
+            
+            
+            ForwardBackMovement(currentAxisRightThumbStick);
         }
 
         private bool TryVisualizePrefab()
@@ -117,7 +130,7 @@ namespace VRIF_URP.Pipes
                                                 _currentDistanceFromPlayer, 
                     _list[i].transform.position);
 
-                if (distance > 0.7f)
+                if (distance > 0.3f)
                 {
                     continue;
                 }
@@ -131,45 +144,42 @@ namespace VRIF_URP.Pipes
             
             if (theLowestDistance != 100f)
             {
-                if (_currentPipeView.PipeDirection == _list[index].GetPipePlacePipeDirection )
-                {
-                    _currentPipeView.transform.position = _list[index].transform.position;
+                _currentPipeView.transform.position = _list[index].transform.position;
                     
-                    if (_playerInputController.GetSecondaryIndexTrigger())
+                if (_playerInputController.GetSecondaryIndexTrigger())
+                {
+                    var indexDist = 0;
+                    if (_currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject().Count != 0)
                     {
-                        var indexDist = 0;
-                        if (_currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject().Count != 0)
+                        foreach (var place in _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject())
                         {
-                         
-                            foreach (var place in _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject())
+                            var distance = 100f;
+                            var tempDistance = Vector3.Distance(_list[index].transform.position,
+                                place.gameObject.transform.position);
+                            if (distance < tempDistance)
                             {
-                                var distance = 100f;
-                                var tempDistance = Vector3.Distance(_list[index].transform.position,
-                                    place.gameObject.transform.position);
-                                if (distance < tempDistance)
-                                {
-                                    distance = tempDistance;
-                                    indexDist = index;
-                                }
+                                distance = tempDistance;
+                                indexDist = index;
                             }
-                            
-                            _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject()[indexDist].SetStateBlockPipePlacesForConnection(true);
                         }
-
-                        _list[index].SetStateBlockPipePlacesForConnection(true);
-
-                        _pipeService.AnimatopLastSpawnedPipeView(Color.green);
-                        
-                        _list = _pipeService.GetEmptyPlace();
-                        
-                        _currentPipeView =  _pipeService.Spawn(_lastPipeID);
-
-                        _currentPipeView.transform.localScale = Vector3.zero;
-                        _currentPipeView.transform.DOScale(Vector3.one, 0.7f);
-                        _currentDistanceFromPlayer = 0.6f;
+                            
+                        _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject()[indexDist].SetStateBlockPipePlacesForConnection(true);
                     }
-                    return true;
+
+                    _list[index].SetStateBlockPipePlacesForConnection(true);
+
+                    _pipeService.AnimatopLastSpawnedPipeView(Color.green);
+                        
+                    _list = _pipeService.GetEmptyPlace();
+                        
+                    _currentPipeView =  _pipeService.Spawn(_lastPipeID);
+
+                    _currentPipeView.transform.localScale = Vector3.zero;
+                    _currentPipeView.transform.DOScale(Vector3.one, 0.7f);
+                    _currentDistanceFromPlayer = 0.6f;
                 }
+
+                return true;
             }
             return false;
         }
@@ -255,37 +265,22 @@ namespace VRIF_URP.Pipes
                             .transform
                             .DORotate(new Vector3(_angle,0,0) , RotationAnimationDuration)
                             .SetEase(Ease.Linear);
-                    
-                        if (_currentPipeView.GetPipeType() == PipeType.Line)
-                        {
-                            foreach (var pipeConnectionPlace in _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject())
-                            {
-                                pipeConnectionPlace.SetPipeConnectionDirection(_currentPipeDirection);
-                            }
-                        }
-                        
-                        ModiferTimer();
                     }
-                }
-                /*else
-                {
-                if (grabButtonIsPressed)
-                {
+                    
                     var rt = Vector3.zero;
                     if (axis.x > 0.8f)
                     {
                         rt = _currentPipeView.transform.rotation.eulerAngles + new Vector3(0,90f,0);
                         _currentPipeView.transform.DORotate( rt, 0.2f);
-                        ModiferTimer();
                     } 
                     else if (axis.x < -0.8f)
                     {
                         rt = _currentPipeView.transform.rotation.eulerAngles + new Vector3(0,-90f,0);
                         _currentPipeView.transform.DORotate( rt, 0.2f);
-                        ModiferTimer();
                     }
-                }                    
-                }*/
+                    
+                    ModiferTimer();
+                }
             }
         }
         
