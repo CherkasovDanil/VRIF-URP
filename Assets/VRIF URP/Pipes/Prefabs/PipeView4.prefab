@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7737582547425843285}
   - component: {fileID: 3975392931679147262}
   - component: {fileID: -3019166940081808432}
+  - component: {fileID: -7826997247935062348}
   m_Layer: 0
   m_Name: PipeView4
   m_TagString: Untagged
@@ -96,11 +97,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PipeDirection: 2
-  PipeConnectionObject: {fileID: 0}
+  PipeConnectionObject: {fileID: -7826997247935062348}
   MeshRenderer: {fileID: 3975392931679147262}
-  id: 0
-  IgnoreUpDownDiretion: 0
-  IgnoreLeftRightDiretion: 0
+--- !u!114 &-7826997247935062348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979712357573018185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83221f29cc8e9a340975e0080463f6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipeConnectionPlace: []
 --- !u!1 &3445911850936248366
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,15 +5,21 @@ namespace VRIF_URP.Pipes
 {
     public class PipeConnectionPlace : MonoBehaviour
     {
-        public bool BlockPlace = true;
-        
+        public bool BlockPlace => _blockPlace;
         public PipeDirection GetPipePlacePipeDirection => pipeDirection;
        
         [SerializeField] private PipeDirection pipeDirection;
         
-        public void SetPipePlacesForConnection(bool state)
+       private bool _blockPlace;
+
+        public void SetStateBlockPipePlacesForConnection(bool state)
         {
-            BlockPlace = state;
+            _blockPlace = state;
+        }
+
+        public void SetPipeConnectionDirection(PipeDirection pipeDirection)
+        {
+            this.pipeDirection = pipeDirection;
         }
     }
 }

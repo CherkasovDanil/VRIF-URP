@@ -12,11 +12,9 @@ namespace VRIF_URP.Pipes
     {
         private readonly PipeConfig _config;
         private readonly IInstantiator _instantiator;
-        private readonly VectorDirectionController _vectorDirectionController;
 
         private Dictionary<int, PipeView> _pipeStorage = new Dictionary<int, PipeView>();
         private List<PipeView> _pipeStorageList = new List<PipeView>();
-        private Dictionary<int, Transform> _connectionPlaceDictionary = new Dictionary<int, Transform>();
         
         private RoomView _roomView;
         private Color _defaultColor;
@@ -28,12 +26,10 @@ namespace VRIF_URP.Pipes
         public PipeService(
             PipeConfig pipeConfig,
             IInstantiator instantiator,
-            SceneHolder sceneHolder,
-            VectorDirectionController vectorDirectionController)
+            SceneHolder sceneHolder)
         {
             _config = pipeConfig;
             _instantiator = instantiator;
-            _vectorDirectionController = vectorDirectionController;
 
             _roomView = sceneHolder.Get<RoomView>();
         }
