@@ -79,7 +79,6 @@ public class LaserPointer : OVRCursor
 
     public override void SetCursorStartDest(Vector3 start, Vector3 dest, Vector3 normal)
     {
-        Debug.Log("asdasdqa");
         _startPoint = start;
         _endPoint = dest;
         _hitTarget = true;

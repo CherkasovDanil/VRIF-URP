@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
-using VRIF_URP.Player;
 using VRIF_URP.Room;
 using VRIF_URP.SceneObject;
 using Zenject;
@@ -42,58 +40,29 @@ namespace VRIF_URP.Pipes
 
         public List<PipeConnectionPlace> GetEmptyPlace()
         {
-            return _roomView.GetEmptyPlace();
-        }
-
-        public GameObject TrySpawnPipe(GameObject currentPipeObject, PipeDirection currentPipeDirection)
-        {
-            var list = _roomView.GetEmptyPlace();
+            var list = new List<PipeConnectionPlace>();
             
-            var theLowestDistance = 100f;
-            var index = -1;
-            
-            for (int i = 0; i < list.Count; i++)
+            foreach (var roomConnectionObject in _roomView.AllPipeConnectionObject)
             {
-                var distance = Vector3.Distance(currentPipeObject.transform.position, list[i].transform.position);
-
-                if (distance > 1f)
+                foreach (var place in roomConnectionObject.GetEmptyPlaceFromObject())
                 {
-                    break;
-                }
-                
-                if ( distance < theLowestDistance)
-                {
-                    theLowestDistance = distance;
-                    index = i;
+                    list.Add(place); 
                 }
             }
 
-            var _angle = 0f;
-            
-            if (theLowestDistance != 100f)
+            if (_pipeStorage.Count > 0)
             {
-                currentPipeObject.transform.position = list[index].transform.position;
-                _angle =  _vectorDirectionController.GetAngle(currentPipeDirection, list[index].GetPipePlacePipeDirection);
-               
-                currentPipeObject
-                    .transform
-                    .DORotate(new Vector3(_angle,0,0) , 0)
-                    .SetEase(Ease.Linear); 
-                
-                   
-                if (_roomView.GetEmptyPlace().Count == 0)
+                foreach (var pipeElement in _pipeStorageList)
                 {
-                    return null;
+                    foreach (var connectionPlace in pipeElement.PipeConnectionObject.GetEmptyPlaceFromObject())
+                    {
+                        list.Add(connectionPlace);
+                    }
                 }
-                    
-                return Spawn(GetLastSpawnedPipeView().GetPipeViewID()).gameObject;
             }
 
-            ErrorAnimation(currentPipeObject);
-
-            return null;
+            return list;
         }
-        
 
         public PipeView Spawn(int id)
         {
@@ -112,13 +81,14 @@ namespace VRIF_URP.Pipes
             return _pipeStorageList.Last();
         }
 
-        private void ErrorAnimation(GameObject gameObject)
+        public void AnimatopLastSpawnedPipeView(Color color)
         {
-            //TODO Remove get component
-            gameObject.GetComponent<MeshRenderer>().material.DOColor(Color.red, .5f)
+            var lastPipe = GetLastSpawnedPipeView();
+
+            lastPipe.MeshRenderer.material.DOColor(color, .5f)
                 .OnComplete(() =>
                     {
-                        gameObject.GetComponent<MeshRenderer>().material.DOColor(Color.white, .5f);
+                        lastPipe.MeshRenderer.material.DOColor(Color.white, .5f);
                     });
         }
     }

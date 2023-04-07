@@ -12,7 +12,7 @@ public class PipeConnectionObject : MonoBehaviour
 
         foreach (var place in pipeConnectionPlace)
         {
-            if (place.IsEmpty)
+            if (!place.BlockPlace)
             {
                 list.Add(place);
             }

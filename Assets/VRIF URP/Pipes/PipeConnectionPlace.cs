@@ -1,29 +1,19 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using VRIF_URP.Player;
 
 namespace VRIF_URP.Pipes
 {
     public class PipeConnectionPlace : MonoBehaviour
     {
-        public PipeDirection GetPipePlacePipeDirection => pipeDirection;
-        public bool IsEmpty => _isEmpty;
+        public bool BlockPlace = true;
         
-        public Transform GetConnectionPlace => transform;
-
+        public PipeDirection GetPipePlacePipeDirection => pipeDirection;
+       
         [SerializeField] private PipeDirection pipeDirection;
         
-        private bool _isEmpty = true;
-
-        private void OnTriggerStay(Collider other)
+        public void SetPipePlacesForConnection(bool state)
         {
-            _isEmpty = false;
-            Debug.Log(_isEmpty);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            _isEmpty = true;
+            BlockPlace = state;
         }
     }
 }

@@ -6,22 +6,8 @@ namespace VRIF_URP.Room
 {
     public class RoomView : SceneObject.SceneObject
     {
+        public List<PipeConnectionObject> AllPipeConnectionObject => allPipeConnectionObject;
+        
         [SerializeField] private List<PipeConnectionObject> allPipeConnectionObject;
-
-        public List<PipeConnectionPlace> GetEmptyPlace()
-        {
-            var allpoint = new List<PipeConnectionPlace>();
-            foreach (var pipe in allPipeConnectionObject)
-            {
-                var list = pipe.GetEmptyPlaceFromObject();
-                
-                foreach (var point in list)
-                {
-                    allpoint.Add(point);
-                }
-            }
-
-            return allpoint;
-        }
     }
 }

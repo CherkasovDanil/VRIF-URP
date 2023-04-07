@@ -54,6 +54,11 @@ namespace VRIF_URP.Player
             return OVRInput.Get(OVRInput.RawButton.RHandTrigger);
         }
         
+        public bool GetGripButtonLeftControllerInput()
+        {
+            return OVRInput.Get(OVRInput.RawButton.LHandTrigger);
+        }
+        
         public bool GetPrimaryIndexTrigger()
         {
             return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
@@ -71,12 +76,7 @@ namespace VRIF_URP.Player
 
         public GameObject GetRayCastInput()
         {
-            if (_raycastInput)
-            {
-                return RayCastInput();
-            }
-
-            return _tempGameObject;
+            return _raycastInput ? RayCastInput() : _tempGameObject;
         }
 
         private GameObject RayCastInput()

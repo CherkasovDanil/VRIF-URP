@@ -95,7 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64093f88e6484ec99f8bbc1b2412a79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 2
+  PipeDirection: 2
+  PipeConnectionObject: {fileID: 0}
+  MeshRenderer: {fileID: 3975392931679147262}
+  id: 0
   IgnoreUpDownDiretion: 0
   IgnoreLeftRightDiretion: 0
 --- !u!1 &3445911850936248366

@@ -23,11 +23,18 @@ namespace VRIF_URP.Pipes
             _playerInputController = playerInputController;
             _playerView = sceneHolder.Get<PlayerView>();
             _playerInputConfig = playerInputConfig;
+            
             tickableManager.Add(this);
         }
         
         public void Tick()
         {
+            if (_playerInputController.GetGripButtonLeftControllerInput())
+            {
+                MoveRotation();
+                return;
+            }
+            
             MoveXZDirection();
         }
 
