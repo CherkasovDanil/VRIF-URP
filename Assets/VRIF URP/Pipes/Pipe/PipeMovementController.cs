@@ -17,20 +17,19 @@ namespace VRIF_URP.Pipes
         private readonly PipeConfig _pipeConfig;
 
         private const float RotationAnimationDuration = 0.2f;
+        private const float ExtraLargeConstForCheck = 100f;
 
+        private PipeDirection _currentPipeDirection;
+        private List<PipeConnectionPlace> _list;
         private PlayerView _playerView;
-        
         private PipeView _currentPipeView;
         private GameObject _tempGO;
-        private List<PipeConnectionPlace> _list;
 
         private float _currentDistanceFromPlayer = 2f;
         private bool _isRotatable = true;
-        private float _angle;
-        private PipeDirection _currentPipeDirection;
-
         private bool _stateRayCastInput = true;
-
+        
+        private float _angle;
         private int _lastPipeID;
         
         public PipeMovementController(
@@ -120,7 +119,7 @@ namespace VRIF_URP.Pipes
 
         private bool TryVisualizePrefab()
         {
-            var theLowestDistance = 100f;
+            var theLowestDistance = ExtraLargeConstForCheck;
             var index = -1;
             
             for (int i = 0; i < _list.Count; i++)
@@ -142,18 +141,19 @@ namespace VRIF_URP.Pipes
                 }
             }
             
-            if (theLowestDistance != 100f)
+            if (theLowestDistance != ExtraLargeConstForCheck)
             {
                 _currentPipeView.transform.position = _list[index].transform.position;
                     
                 if (_playerInputController.GetSecondaryIndexTrigger())
                 {
                     var indexDist = 0;
+                    var distance = 100f;
+                    
                     if (_currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject().Count != 0)
                     {
                         foreach (var place in _currentPipeView.PipeConnectionObject.GetEmptyPlaceFromObject())
                         {
-                            var distance = 100f;
                             var tempDistance = Vector3.Distance(_list[index].transform.position,
                                 place.gameObject.transform.position);
                             if (distance < tempDistance)

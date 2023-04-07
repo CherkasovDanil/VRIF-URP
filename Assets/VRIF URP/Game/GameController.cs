@@ -13,6 +13,9 @@ namespace VRIF_URP.Game
         private readonly PlayerInputController _playerInputController;
         private readonly PipeService _pipeService;
 
+        private const float DelayForRestartGame = 4f;
+        private const float DelayWhereError = 2f;
+
         private PlayerView _playerView;
 
         public GameController(
@@ -24,7 +27,6 @@ namespace VRIF_URP.Game
             _playerInputController = playerInputController;
             _pipeService = pipeService;
             _playerView = sceneHolder.Get<PlayerView>();
-            
 
             tickableManager.Add(this);
         }
@@ -43,7 +45,7 @@ namespace VRIF_URP.Game
             {
                 _playerView.ScreenFade.fadeColor = Color.black;
                 _playerView.ScreenFade.FadeOut();
-                DOVirtual.DelayedCall(4f, () =>
+                DOVirtual.DelayedCall(DelayForRestartGame, () =>
                 {
                     SceneManager.LoadScene(0);
                 });
@@ -53,7 +55,7 @@ namespace VRIF_URP.Game
             {
                 _playerView.ScreenFade.fadeColor = Color.red;
                 _playerView.ScreenFade.FadeOut();
-                DOVirtual.DelayedCall(2f, () =>
+                DOVirtual.DelayedCall(DelayWhereError, () =>
                 {
                     _playerView.ScreenFade.FadeIn();
                 });

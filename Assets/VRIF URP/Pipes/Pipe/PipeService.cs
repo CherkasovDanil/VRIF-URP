@@ -86,7 +86,8 @@ namespace VRIF_URP.Pipes
         {
             var lastPipe = GetLastSpawnedPipeView();
 
-            lastPipe.MeshRenderer.material.DOColor(color, .5f)
+            lastPipe.MeshRenderer.material
+                .DOColor(color, .5f)
                 .OnComplete(() =>
                     {
                         lastPipe.MeshRenderer.material.DOColor(Color.white, .5f);
